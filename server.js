@@ -8,8 +8,19 @@ fastify.register(require('fastify-static'), {
     prefix: '/public/', // optional: default '/'
 })
 
+// Templating engine
+fastify.register(require('point-of-view'), {
+  engine: {
+    handlebars: require('handlebars')
+  }
+})
+
 fastify.get('/', function (req, reply) {
-    return reply.sendFile('index.html') // serving path.join(__dirname, 'public', 'myHtml.html') directly
+  reply.view('./templates/index.html', {data:{title:'custom title woo hoo'}})
+})
+
+fastify.get('/ping', (req,reply)=>{
+  return reply.send({ping:'pong'})
 })
 
 // Run the server!
